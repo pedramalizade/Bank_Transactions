@@ -64,8 +64,17 @@ namespace Quiz_Maktab.Service
 
         public bool IsCardValid(string cardNumber)
         {
-            var card = _cardRepository.GetCardByNumber(cardNumber);
-            return card != null && card.IsActive;
+            if(cardNumber.Length == 16)
+            {
+                var card = _cardRepository.GetCardByNumber(cardNumber);
+                return card != null && card.IsActive;
+            }
+            else
+            {
+                Console.WriteLine("Your card Number is not correct.");
+                return false;
+            }
+            
         }
 
         public void DeductBalance(Card card, float amount)

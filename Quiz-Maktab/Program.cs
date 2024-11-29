@@ -24,6 +24,7 @@ if (result != "Check Successful.")
 
 while (true)
 {
+    Console.Clear();
     Console.WriteLine("1: transaction");
     Console.WriteLine("2: view Transaction");
     Console.WriteLine("3: Exit");
@@ -49,6 +50,7 @@ while (true)
             {
                 Console.WriteLine($"Date : {transaction.TranceactionTime}, Amount : {transaction.Amount}, Success: {transaction.IsSuccessful}");
             }
+            Console.ReadKey();
             break;
         case "3":
             Console.WriteLine("thanks");
