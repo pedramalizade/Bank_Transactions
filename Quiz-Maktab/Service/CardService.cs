@@ -24,10 +24,10 @@ namespace Quiz_Maktab.Service
                 return "Card Not Found.";
             }
 
-            if(card.Password != password)
+            if (card.Password != password)
             {
-                card.FailedAttempts++; 
-                if(card.FailedAttempts >= 3)
+                card.FailedAttempts++;
+                if (card.FailedAttempts >= 3)
                 {
                     card.IsActive = false;
                     _cardRepository.UpdateCard(card);
@@ -36,7 +36,7 @@ namespace Quiz_Maktab.Service
                 _cardRepository.UpdateCard(card);
                 return "Incorrect password";
             }
-            card.FailedAttempts = 0;
+            // card.FailedAttempts = 0;
             _cardRepository.UpdateCard(card);
             return "Check Successful.";
         }
@@ -48,7 +48,7 @@ namespace Quiz_Maktab.Service
 
         public bool UpdateBalance(Card card, float amount)
         {
-            if(card == null)
+            if (card == null)
             {
                 return false;
             }
@@ -60,6 +60,24 @@ namespace Quiz_Maktab.Service
         public bool CheckCardBalance(Card card, float amount)
         {
             return card.Balance >= amount;
+        }
+
+        public bool IsCardValid(string cardNumber)
+        {
+            var card = _cardRepository.GetCardByNumber(cardNumber);
+            return card != null && card.IsActive;
+        }
+
+        public void DeductBalance(Card card, float amount)
+        {
+            card.Balance -= amount;
+            _cardRepository.UpdateCard(card);
+        }
+
+        public void AddBalance(Card card, float amount)
+        {
+            card.Balance += amount;
+            _cardRepository.UpdateCard(card);
         }
     }
 }

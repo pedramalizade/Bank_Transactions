@@ -9,7 +9,7 @@ namespace Quiz_Maktab.Interface.Service
 {
     public interface ITransactionService
     {
-        public string Transfer(string sourceCardNumber, string destinationCardNumber, string password, float amount);
-        public List<Transaction> GetTransactions(string cardNumber);
+        public bool Transfer(string sourceCardNumber, string destinationCardNumber, float amount);
+        public List<Transaction> GetTransactions();
     }
 }

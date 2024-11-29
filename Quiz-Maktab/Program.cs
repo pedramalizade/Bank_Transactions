@@ -1,4 +1,5 @@
-﻿using Quiz_Maktab.Interface.Repository;
+﻿using Microsoft.IdentityModel.Tokens;
+using Quiz_Maktab.Interface.Repository;
 using Quiz_Maktab.Interface.Service;
 using Quiz_Maktab.Repository;
 using Quiz_Maktab.Service;
@@ -15,7 +16,7 @@ Console.WriteLine("Enter Your Password: ");
 string password = Console.ReadLine();
 
 string result = cardService.CheckCard(cardNumber, password);
-if(result != "Check Successful.")
+if (result != "Check Successful.")
 {
     Console.WriteLine(result);
     return;
@@ -32,39 +33,21 @@ while (true)
     switch (choice)
     {
         case "1":
-            void TransferMoney(TransactionService transactionService, CardRepository cardService , string sourceCardNumber)
-            {
-                Console.Write("Enter the destination card numnber: ");
-                string destinationCardNmber = Console.ReadLine();
-                Console.Write("enter the amount to transfer: ");
-                if(float.TryParse(Console.ReadLine(), out float amount) && amount > 0)
-                {
-                    var sourceCard = cardService.GetCardByNumber(sourceCardNumber);
-                }
+            Console.Clear();
+            Console.Write("Enter Amount: ");
+            var amount = float.Parse(Console.ReadLine());
+            Console.Write("Enter the Destination Card Number: ");
+            var destinationCardNumber = Console.ReadLine();
+            var mmd = transactionService.Transfer(cardNumber, destinationCardNumber, amount);
+            Console.WriteLine(mmd);
 
-            }
             break;
         case "2":
-            void viewTransavtion(TransactionService transactionService, string cardNumber)
+            Console.Clear();
+            var transactionList = transactionService.GetTransactions();
+            foreach (var transaction in transactionService.GetTransactions())
             {
-                var transactions = transactionService.GetTransactions(cardNumber);
-                if(transactions.Count > 0)
-                {
-                    Console.WriteLine("Your transaction: ");
-                    foreach (var transaction in transactions)
-                    {
-                        Console.WriteLine($"Date : {transaction.TranceactionTime}, Amount : {transaction.Amount}, Success: {transaction.IsSuccessful}");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("No transaction found.");
-                }
-                void checkBalance(CardService cardService, string cardNumber)
-                {
-                    var card = cardService.GetCardByNumber(cardNumber);
-                    Console.WriteLine($"your current balance is {card.Balance}");
-                }
+                Console.WriteLine($"Date : {transaction.TranceactionTime}, Amount : {transaction.Amount}, Success: {transaction.IsSuccessful}");
             }
             break;
         case "3":
