@@ -16,7 +16,8 @@ namespace Quiz_Maktab.Interface.Service
         public bool IsCardValid(string cardNumber);
         public void DeductBalance(Card card, float amount);
         public void AddBalance(Card card, float amount);
-
-
+        public bool ChangePassword(string cardNumber, string password, string newPassword);
+        public bool ReduceAmount(double money, string cardNumber, string distanceCardNumber);
+        public bool GetHolderNameCard(string cardNumber);
     }
 }

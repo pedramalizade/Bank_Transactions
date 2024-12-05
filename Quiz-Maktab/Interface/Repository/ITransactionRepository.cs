@@ -9,11 +9,11 @@ namespace Quiz_Maktab.Interface.Repository
 {
     public interface ITransactionRepository
     {
-        //public Card SourceCard(string sourceCardNumber);
-        //public Card DestinationCard(string destinationCardNumber);
+
 
         public void AddTransaction(Transaction transaction);
-        public List<Transaction> GetAll();
+        public List<Transaction> GetAllTransaction(string cardNumber);
+        public float TransactionAmountInDay(string cardnumber);
 
     }
 }

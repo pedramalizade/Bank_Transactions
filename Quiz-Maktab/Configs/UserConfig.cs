@@ -9,15 +9,11 @@ using System.Threading.Tasks;
 
 namespace Quiz_Maktab.Configs
 {
-    public class CardConfig : IEntityTypeConfiguration<Card>
+    public class UserConfig : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Card> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(c => c.CardNumber);
-
-            builder.HasOne(a => a.User)
-                .WithMany(x => x.Cards)
-                .HasForeignKey(x => x.UserId);
+           builder.HasKey(x => x.Id);
         }
     }
 }

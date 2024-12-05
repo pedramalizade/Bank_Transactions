@@ -1,4 +1,5 @@
 ﻿using Quiz_Maktab.Entities;
+using Quiz_Maktab.Interface.Repository;
 using Quiz_Maktab.Interface.Service;
 using Quiz_Maktab.Repository;
 using System;
@@ -36,7 +37,6 @@ namespace Quiz_Maktab.Service
                 _cardRepository.UpdateCard(card);
                 return "Incorrect password";
             }
-            // card.FailedAttempts = 0;
             _cardRepository.UpdateCard(card);
             return "Check Successful.";
         }
@@ -45,7 +45,11 @@ namespace Quiz_Maktab.Service
         {
             return _cardRepository.GetCardByNumber(cardNumber);
         }
-
+        public bool ChangePassword(string cardNumber, string password, string newPassword)
+        {
+            var user = _cardRepository.ChangePassword(cardNumber, password, newPassword);
+            return true;
+        }
         public bool UpdateBalance(Card card, float amount)
         {
             if (card == null)
@@ -54,6 +58,18 @@ namespace Quiz_Maktab.Service
             }
             card.Balance = card.Balance + amount;
             _cardRepository.UpdateCard(card);
+            return true;
+        }
+
+        public bool GetHolderNameCard(string cardNumber)
+        {
+            var name = _cardRepository.GetCardByNumber(cardNumber).HolderName;
+            if (name == null)
+            {
+                Console.WriteLine("cannot find holder name");
+                return false;
+            }
+            Console.WriteLine($"HolderName : {name}");
             return true;
         }
 
@@ -75,6 +91,35 @@ namespace Quiz_Maktab.Service
                 return false;
             }
             
+        }
+
+        public bool ReduceAmount(double money, string cardNumber, string distanceCardNumber)
+        {
+            var distanceCard = _cardRepository.GetCardByNumber(distanceCardNumber);
+            if(distanceCard == null)
+            {
+                return false;
+            }
+            else
+            {
+                if(money <= 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    double moneyTax;
+                    if (money > 1000)
+                    {
+                        moneyTax = money * 0.015;
+                    }
+                    else
+                    {
+                        moneyTax = money * 0.005;
+                    }
+                }
+                return true;
+            }
         }
 
         public void DeductBalance(Card card, float amount)

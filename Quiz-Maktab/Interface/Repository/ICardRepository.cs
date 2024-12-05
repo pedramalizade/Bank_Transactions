@@ -11,5 +11,7 @@ namespace Quiz_Maktab.Interface.Repository
     {
         public Card GetCardByNumber(string cardNumber);
         public void UpdateCard(Card card);
+        public bool ChangePassword(string cardNumber, string password, string newPassword);
+
     }
 }

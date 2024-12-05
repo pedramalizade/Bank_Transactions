@@ -44,7 +44,12 @@ namespace Quiz_Maktab.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("CardNumber");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Cards");
                 });
@@ -83,6 +88,42 @@ namespace Quiz_Maktab.Migrations
                     b.ToTable("Transactions");
                 });
 
+            modelBuilder.Entity("Quiz_Maktab.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Quiz_Maktab.Entities.Card", b =>
+                {
+                    b.HasOne("Quiz_Maktab.Entities.User", "User")
+                        .WithMany("Cards")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Quiz_Maktab.Entities.Transaction", b =>
                 {
                     b.HasOne("Quiz_Maktab.Entities.Card", "DestinationCard")
@@ -107,6 +148,11 @@ namespace Quiz_Maktab.Migrations
                     b.Navigation("ReceivedTransactions");
 
                     b.Navigation("SentTransaction");
+                });
+
+            modelBuilder.Entity("Quiz_Maktab.Entities.User", b =>
+                {
+                    b.Navigation("Cards");
                 });
 #pragma warning restore 612, 618
         }

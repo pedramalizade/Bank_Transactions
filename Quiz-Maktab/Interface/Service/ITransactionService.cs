@@ -10,6 +10,6 @@ namespace Quiz_Maktab.Interface.Service
     public interface ITransactionService
     {
         public bool Transfer(string sourceCardNumber, string destinationCardNumber, float amount);
-        public List<Transaction> GetTransactions();
+        public List<Transaction> GetTransactions(string cardNumber);
     }
 }

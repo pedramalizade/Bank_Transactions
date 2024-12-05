@@ -23,20 +23,17 @@ namespace Quiz_Maktab.Repository
             _appDbContext.SaveChanges();
         }
 
-        public List<Transaction> GetAll()
+        public List<Transaction> GetAllTransaction(string cardNumber)
         {
-            return _appDbContext.Transactions.ToList();
+            return _appDbContext.Transactions.Where(t => t.SourceCardNumber == cardNumber || t.DestinationCardNumber == cardNumber).ToList();
         }
 
-
-        //public Card DestinationCard(string destinationCardNumber)
-        //{
-        //    var destinationCard = _appDbContext.Cards.FirstOrDefault(c => c.CardNumber == destinationCardNumber);
-        //}
-
-        //public Card SourceCard(string sourceCardNumber)
-        //{
-        //    var sourceCard = _appDbContext.Cards.FirstOrDefault(c => c.CardNumber == sourceCardNumber);
-        //}
+        public float TransactionAmountInDay(string cardnumber)
+        {
+            var transactions = _appDbContext.Transactions.Where(t => t.SourceCardNumber == cardnumber && t.TranceactionTime.DayOfYear == DateTime.Now.DayOfYear).ToList();
+            float amount = 0;
+            transactions.ForEach(t => amount += t.Amount);
+            return amount;
+        }
     }
 }

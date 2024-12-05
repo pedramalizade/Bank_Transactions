@@ -1,5 +1,6 @@
 ﻿using Quiz_Maktab.APPDbContext;
 using Quiz_Maktab.Entities;
+using Quiz_Maktab.Interface.Repository;
 using Quiz_Maktab.Interface.Service;
 using Quiz_Maktab.Repository;
 using System;
@@ -22,6 +23,31 @@ namespace Quiz_Maktab.Service
 
         public bool Transfer(string sourceCardNumber, string destinationCardNumber,  float amount)
         {
+            var transactionamount = _transactionRepository.TransactionAmountInDay(sourceCardNumber);
+            if (transactionamount >= 250)
+            {
+                Console.WriteLine(" Transfer limit has been exceeded.");
+                return false;
+            }
+            if (transactionamount + amount > 250)
+            {
+                Console.WriteLine($"The Transfer limit will be  exceeded.Entered amonut must be less than {transactionamount - 250}");
+                Console.ReadKey();
+                return false;
+
+            }
+
+            if (amount < 0)
+            {
+                Console.WriteLine("The transfer amount must be greater than zero.");
+                Console.ReadKey();
+                return false;
+
+            }
+
+            _cardService.ReduceAmount(amount, sourceCardNumber, destinationCardNumber);
+
+
             var sourceCard = _cardService.GetCardByNumber(sourceCardNumber);
             var destinationCard = _cardService.GetCardByNumber(destinationCardNumber);
 
@@ -52,44 +78,12 @@ namespace Quiz_Maktab.Service
             _transactionRepository.AddTransaction(transaction);
             return true;
 
-            //    var result = _cardService.CheckCard(sourceCardNumber, password);
-            //    if(result != "Check Successful.")
-            //    {
-            //        return result;
-            //    }
-
-            //    var sourceCard = _cardService.GetCardByNumber(sourceCardNumber);
-            //    var destinationCard = _cardService.GetCardByNumber(destinationCardNumber);
-            //    if(destinationCard == null)
-            //    {
-            //        return "destination card not found.";
-            //    }
-
-            //    if(!_cardService.CheckCardBalance(sourceCard, amount))
-            //    {
-            //        return "faild.";
-            //    }
-
-            //    _cardService.UpdateBalance(sourceCard, -amount);
-            //    _cardService.UpdateBalance(destinationCard, amount);
-
-            //    var transaction = new Transaction
-            //    {
-            //        SourceCardNumber = sourceCard.CardNumber,
-            //        DestinationCardNumber = destinationCard.CardNumber,
-            //        Amount = amount,
-            //        TranceactionTime = DateTime.Now,
-            //        IsSuccessful = true
-            //    };
-
-            //    _transactionRepository.AddTransaction(transaction);
-
-            //    return "Transfer successfully.";
+            
         }
 
-        public List<Transaction> GetTransactions()
+        public List<Transaction> GetTransactions(string cardNumber)
         {
-            return _transactionRepository.GetAll();
+            return _transactionRepository.GetAllTransaction(cardNumber);
 
         }
     }
