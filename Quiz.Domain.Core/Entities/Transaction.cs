@@ -1,0 +1,14 @@
+﻿namespace src.Domain.Core.Quiz.Domain.Core.Entities
+{
+    public class Transaction
+    {
+        public int TransactionId { get; set; }
+        public string SourceCardNumber { get; set; }
+        public string DestinationCardNumber { get; set; }
+        public float Amount { get; set; }
+        public DateTime TranceactionTime { get; set; }
+        public bool IsSuccessful { get; set; }
+        public Card SourceCard { get; set; }
+        public Card DestinationCard { get; set; }
+    }
+}

@@ -1,14 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using Quiz_Maktab.APPDbContext;
-using Quiz_Maktab.Entities;
-using Quiz_Maktab.Interface.Repository;
-using Quiz_Maktab.Interface.Service;
-using Quiz_Maktab.Repository;
-using Quiz_Maktab.Service;
-using System;
-using System.Transactions;
-
-ICardService cardService = new CardService();
+﻿ICardService cardService = new CardService();
 ITransactionService transactionService = new TransactionService();
 Dictionary<int, DateTime> codes = new Dictionary<int, DateTime>();
 IUserService userService = new UserService();
