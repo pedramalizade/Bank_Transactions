@@ -12,21 +12,21 @@
             _appDbContext = appDbContext;
         }
 
-        public void AddCard(int userId, Card card)
+        public bool AddCard(int userId, Card card)
         {
-            var userid = _userRepository.GetById(userId);
-            if (userid != null)
-            {
-                var user = _appDbContext.Users.Find(userId);
-                if (user == null)
-                {
-                    Console.WriteLine("User does not exist.");
-                }
-                card.UserId = userId;
-                _appDbContext.Cards.Add(card);
-                _appDbContext.SaveChanges();
-                Console.WriteLine("Card Added.");
-            }
+            var user = _userRepository.GetById(userId);
+            if (user == null)
+                return false;
+
+            card.UserId = userId;
+
+            var existingCard = _appDbContext.Cards.FirstOrDefault(c => c.CardNumber == card.CardNumber);
+            if (existingCard != null)
+                return false;
+
+            _appDbContext.Cards.Add(card);
+            _appDbContext.SaveChanges();
+            return true;
         }
 
         public int GenerateRandomeCode()
@@ -61,35 +61,40 @@
 
         public bool Register(User user)
         {
-            var username = _appDbContext.Users.FirstOrDefault(t => t.Username == user.Username && t.Password == user.Password);
-            if (username != null)
+            var existingUser = _appDbContext.Users.FirstOrDefault(t => t.Username == user.Username);
+            if (existingUser != null)
             {
                 return false;
             }
+
             _appDbContext.Users.Add(user);
+            _appDbContext.SaveChanges();
+
             InMemoryDb.OnlineUser = user;
+
+            return true;
+        }
+
+        public bool RemoveCard(string cardNumber)
+        {
+            var card = _appDbContext.Cards.FirstOrDefault(c => c.CardNumber == cardNumber);
+            if (card == null)
+                return false;
+
+            _appDbContext.Cards.Remove(card);
             _appDbContext.SaveChanges();
             return true;
         }
 
-        public void RemoveCard(string cardNumber)
+        public List<Card> ShowCardBalance(int userId)
         {
-            var remove = _appDbContext.Cards.FirstOrDefault(c => c.CardNumber == cardNumber);
-            if (remove != null)
-            {
-                _appDbContext.Cards.Remove(remove);
-                _appDbContext.SaveChanges();
-                Console.WriteLine("card item remove successfully.");
-            }
-            else
-            {
-                Console.WriteLine("card item not found.");
-            }
-        }
+            var user = _userRepository.GetById(userId);
+            if (user == null)
+                return new List<Card>();
 
-        public void ShowCardBalance(int userId)
-        {
-            _userRepository.ShowCardBalance(userId);
+            return _appDbContext.Cards
+                .Where(c => c.UserId == userId)
+                .ToList();
         }
     }
 }

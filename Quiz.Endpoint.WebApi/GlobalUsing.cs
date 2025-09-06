@@ -1,0 +1,10 @@
+﻿global using Microsoft.AspNetCore.Mvc;
+global using src.Domain.Core.Quiz.Domain.Core.Contracts.Service;
+global using src.Domain.Core.Quiz.Domain.Core.Entities;
+global using Quiz.Domain.Core.DTOs;
+global using Microsoft.EntityFrameworkCore;
+global using src.Domain.Core.Quiz.Domain.Core.Contracts.Repository;
+global using src.Domain.Service.Quiz.Domain.Service.Service;
+global using src.Infrastructure.DataAccess.Quiz.Infra.DataAccess.Repo.Ef.Repository;
+global using src.Infrastructure.Db.Quiz.Infra.SqlServer.Common;
+global using System.Text.Json.Serialization;

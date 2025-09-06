@@ -10,52 +10,52 @@
             _transactionRepository = transactionRepository;
         }
 
-        public bool Transfer(string sourceCardNumber, string destinationCardNumber,  float amount)
+        public bool Transfer(string sourceCardNumber, string destinationCardNumber, float amount, out string message)
         {
+            message = string.Empty;
+
             var transactionamount = _transactionRepository.TransactionAmountInDay(sourceCardNumber);
             if (transactionamount >= 250)
             {
-                Console.WriteLine(" Transfer limit has been exceeded.");
+                message = "Transfer limit has been exceeded.";
                 return false;
             }
+
             if (transactionamount + amount > 250)
             {
-                Console.WriteLine($"The Transfer limit will be  exceeded.Entered amonut must be less than {transactionamount - 250}");
-                Console.ReadKey();
+                message = $"The transfer limit will be exceeded. Entered amount must be less than {250 - transactionamount}";
                 return false;
-
             }
 
-            if (amount < 0)
+            if (amount <= 0)
             {
-                Console.WriteLine("The transfer amount must be greater than zero.");
-                Console.ReadKey();
+                message = "The transfer amount must be greater than zero.";
                 return false;
-
             }
-
-            _cardService.ReduceAmount(amount, sourceCardNumber, destinationCardNumber);
-
 
             var sourceCard = _cardService.GetCardByNumber(sourceCardNumber);
             var destinationCard = _cardService.GetCardByNumber(destinationCardNumber);
 
-            if(sourceCard == null || destinationCardNumber == null )
+            if (sourceCard == null || destinationCard == null)
             {
-                Console.WriteLine("Surce or destination card not found.");
+                message = "Source or destination card not found.";
                 return false;
             }
 
-            if(!_cardService.CheckCardBalance(sourceCard, amount))
+            if (!_cardService.CheckCardBalance(sourceCard, amount))
             {
-                Console.WriteLine("Insifficient balance on the source card.");
+                message = "Insufficient balance on the source card.";
                 return false;
             }
 
-            _cardService.DeductBalance(sourceCard, amount);
-            _cardService.AddBalance(destinationCard, amount);
+            var result = _cardService.ReduceAmount(amount, sourceCardNumber, destinationCardNumber);
+            if (!result)
+            {
+                message = "Transfer failed during processing.";
+                return false;
+            }
 
-            var transaction = new Transaction 
+            var transaction = new Transaction
             {
                 SourceCardNumber = sourceCardNumber,
                 DestinationCardNumber = destinationCardNumber,
@@ -65,15 +65,13 @@
             };
 
             _transactionRepository.AddTransaction(transaction);
+            message = "Transfer completed successfully.";
             return true;
-
-            
         }
 
         public List<Transaction> GetTransactions(string cardNumber)
         {
             return _transactionRepository.GetAllTransaction(cardNumber);
-
         }
     }
 }

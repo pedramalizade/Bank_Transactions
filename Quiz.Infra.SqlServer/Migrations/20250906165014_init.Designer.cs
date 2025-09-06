@@ -12,7 +12,7 @@ using src.Infrastructure.Db.Quiz.Infra.SqlServer.Common;
 namespace Quiz.Infra.SqlServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250905201455_init")]
+    [Migration("20250906165014_init")]
     partial class init
     {
         /// <inheritdoc />

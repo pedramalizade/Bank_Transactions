@@ -4,9 +4,9 @@
     {
         public User Login(string username, string password);
         public bool Register(User user);
-        public void ShowCardBalance(int userId);
-        public void AddCard(int userId, Card card);
-        public void RemoveCard(string cardNumber);
+        public List<Card> ShowCardBalance(int userId);
+        public bool AddCard(int userId, Card card);
+        public bool RemoveCard(string cardNumber);
         public int GenerateRandomeCode();
     }
 }

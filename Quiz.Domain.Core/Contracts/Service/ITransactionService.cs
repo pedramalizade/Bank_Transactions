@@ -2,7 +2,7 @@
 {
     public interface ITransactionService
     {
-        public bool Transfer(string sourceCardNumber, string destinationCardNumber, float amount);
+        public bool Transfer(string sourceCardNumber, string destinationCardNumber, float amount, out string message);
         public List<Transaction> GetTransactions(string cardNumber);
     }
 }

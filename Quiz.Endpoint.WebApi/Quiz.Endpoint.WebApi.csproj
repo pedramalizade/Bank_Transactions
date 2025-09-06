@@ -22,8 +22,4 @@
     <ProjectReference Include="..\Quiz.Infra.SqlServer\Quiz.Infra.SqlServer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
