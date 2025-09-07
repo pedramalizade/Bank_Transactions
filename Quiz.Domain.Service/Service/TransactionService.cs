@@ -17,19 +17,19 @@
             var transactionamount = _transactionRepository.TransactionAmountInDay(sourceCardNumber);
             if (transactionamount >= 250)
             {
-                message = "Transfer limit has been exceeded.";
+                message = "سقف انتقال پر شده است.";
                 return false;
             }
 
             if (transactionamount + amount > 250)
             {
-                message = $"The transfer limit will be exceeded. Entered amount must be less than {250 - transactionamount}";
+                message = $"سقف انتقال پر شده مبلغ وارد شده زیاد است {250 - transactionamount}";
                 return false;
             }
 
             if (amount <= 0)
             {
-                message = "The transfer amount must be greater than zero.";
+                message = "مبلغ انتقال نمیتونه 0 باشد.";
                 return false;
             }
 
@@ -38,20 +38,20 @@
 
             if (sourceCard == null || destinationCard == null)
             {
-                message = "Source or destination card not found.";
+                message = "کارت فرستنده یا گیرنده پیدا نشد.";
                 return false;
             }
 
             if (!_cardService.CheckCardBalance(sourceCard, amount))
             {
-                message = "Insufficient balance on the source card.";
+                message = "موجودی کارت مبدأ کافی نیست.";
                 return false;
             }
 
             var result = _cardService.ReduceAmount(amount, sourceCardNumber, destinationCardNumber);
             if (!result)
             {
-                message = "Transfer failed during processing.";
+                message = "عملیات انتقال در حین پردازش با خطا مواجه شد.";
                 return false;
             }
 
@@ -65,7 +65,7 @@
             };
 
             _transactionRepository.AddTransaction(transaction);
-            message = "Transfer completed successfully.";
+            message = "انتقال با موفقیت انجام شد.";
             return true;
         }
 

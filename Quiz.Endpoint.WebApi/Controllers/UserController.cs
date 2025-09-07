@@ -47,7 +47,7 @@
         /// RemoveCard
         /// </summary>
         [HttpPost("Add")]
-        public IActionResult AddCard(int userId, [FromBody] Card card)
+        public IActionResult AddCard([FromBody] Card card)
         {
             var user = InMemoryDb.OnlineUser;
             if (user == null)
@@ -56,7 +56,7 @@
             if (card == null || string.IsNullOrEmpty(card.CardNumber) || string.IsNullOrEmpty(card.Password))
                 return BadRequest("ورودی اطلاعات کارت اشتباه است");
 
-            var result = _userService.AddCard(userId, card);
+            var result = _userService.AddCard(user.Id, card);
             if (!result)
                 return BadRequest("افزودن کارت با خطا مواجه شد (ممکن است کارت تکراری باشد یا کاربر وجود نداشته باشد).");
 

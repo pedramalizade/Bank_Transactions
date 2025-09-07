@@ -12,7 +12,7 @@
             var card = _cardRepository.GetCardByNumber(cardNumber);
             if (card == null)
             {
-                return "Card Not Found.";
+                return "کارت پیدا نشد.";
             }
 
             if (card.Password != password)
@@ -22,14 +22,14 @@
                 {
                     card.IsActive = false;
                     _cardRepository.UpdateCard(card);
-                    return "Card Is Blocked";
+                    return "کارت مسدود است";
                 }
                 _cardRepository.UpdateCard(card);
-                return "Incorrect password";
+                return "رمز نادرست است";
             }
             card.FailedAttempts = 0;
             _cardRepository.UpdateCard(card);
-            return "Check Successful.";
+            return "درست است!.";
         }
         public Card GetCardByNumber(string cardNumber)
         {
