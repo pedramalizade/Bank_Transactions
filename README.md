@@ -3,9 +3,7 @@
 BankRequests is a backend system designed to simulate secure and structured financial request processing using **ASP.NET Core** and Clean Architecture.
 
 It focuses on handling banking-style operations such as request creation, validation, and processing workflows.
-
 ---
-
 ## 🚀 Overview
 
 This project simulates a banking request workflow system where users can create financial requests that go through validation and processing pipelines.
