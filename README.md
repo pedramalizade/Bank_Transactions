@@ -20,9 +20,7 @@ Built using **Clean Architecture principles**:
 - Application Layer: Request processing logic
 - Infrastructure Layer: Data persistence and services
 - API Layer: REST endpoints
-
 ---
-
 ## ✨ Key Features
 
 - 💳 **Bank Request Management**
